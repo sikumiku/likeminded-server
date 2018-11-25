@@ -1,14 +1,14 @@
 spring:
   profiles:
       active: spring.profiles.active
-  security:
-    oauth2:
-      client:
-        registration:
-          okta:
-            client-id: 0oahl9drlqFZPxkUH0h7
-            client-secret: g_3IW-P0ef8layFfmRwSj95V6HooC2hVcRRYb52_
-            scope: openid, email, profile
-        provider:
-          okta:
-            issuer-uri: https://dev-631325.oktapreview.com/oauth2/default
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          okta:
+#            client-id: 0oahl9drlqFZPxkUH0h7
+#            client-secret: g_3IW-P0ef8layFfmRwSj95V6HooC2hVcRRYb52_
+#            scope: openid, email, profile
+#        provider:
+#          okta:
+#            issuer-uri: https://dev-631325.oktapreview.com/oauth2/default

@@ -1,21 +1,21 @@
 package com.dev.sigrid.likemindedserver.controller;
 
 import com.dev.sigrid.likemindedserver.domain.Event;
-import com.dev.sigrid.likemindedserver.domain.User;
+//import com.dev.sigrid.likemindedserver.domain.User;
 import com.dev.sigrid.likemindedserver.repository.EventRepository;
 import com.dev.sigrid.likemindedserver.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.Principal;
+//import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +35,8 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    @CrossOrigin(origins = "http://localhost:3000")
     Collection<Event> events() {
+        System.out.println("fetching events");
         return eventRepository.findAll();
     }
 
@@ -48,20 +48,19 @@ public class EventController {
     }
 
     @PostMapping("/event")
-    ResponseEntity<Event> createEvent(@Valid @RequestBody Event event,
-                                      @AuthenticationPrincipal OAuth2User principal) throws URISyntaxException {
+    ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) throws URISyntaxException {
         log.info("Request to create event: {}", event);
-        Map<String, Object> details = principal.getAttributes();
-        String userId = details.get("sub").toString();
-
-        // check to see if user already exists
-        Optional<User> user = userRepository.findById(userId);
-        if (!user.isPresent()) {
-            user = Optional.of(new User(userId,
-                    details.get("email").toString(), details.get("name").toString()));
-        }
-        userRepository.save(user.get());
-        event.setUser(user.get());
+//        Map<String, Object> details = principal.getAttributes();
+//        String userId = details.get("sub").toString();
+//
+//        // check to see if user already exists
+//        Optional<User> user = userRepository.findById(userId);
+//        if (!user.isPresent()) {
+//            user = Optional.of(new User(userId,
+//                    details.get("email").toString(), details.get("name").toString()));
+//        }
+//        userRepository.save(user.get());
+//        event.setUser(user.get());
 
         Event result = eventRepository.save(event);
         return ResponseEntity.created(new URI("/api/v1/event/" + result.getId()))
