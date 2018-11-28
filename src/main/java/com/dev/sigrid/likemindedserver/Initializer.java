@@ -25,25 +25,25 @@ public class Initializer implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-//        Stream.of("Denver JUG", "Utah JUG", "Seattle JUG",
-//                "Richmond JUG").forEach(name ->
-//                eventRepository.save(new Event(name))
-//        );
-//
-//        Event event = eventRepository.findByName("Denver JUG");
-//        event.setDescription("Some description");
-//        Address address = Address.builder()
-//                .id(Long.parseLong("1"))
-//                .addressLine("12 Some Address")
-//                .postCode("12345")
-//                .city("Some City")
-//                .countryCode("usa")
-//                .createdTime(LocalDateTime.now())
-//                .updatedTime(LocalDateTime.now())
-//                .build();
-//        event.setAddress(address);
-//        address.setEvent(event);
-//        eventRepository.save(event);
+        Stream.of("Denver JUG", "Utah JUG", "Seattle JUG",
+                "Richmond JUG").forEach(name ->
+                eventRepository.save(new Event(name))
+        );
+
+        Event event = eventRepository.findByName("Denver JUG");
+        event.setDescription("Some description");
+        Address address = Address.builder()
+                .id(Long.parseLong("1"))
+                .addressLine("12 Some Address")
+                .postCode("12345")
+                .city("Some City")
+                .countryCode("usa")
+                .createdTime(LocalDateTime.now())
+                .updatedTime(LocalDateTime.now())
+                .build();
+        event.setAddress(address);
+        address.setEvent(event);
+        eventRepository.save(event);
 
         eventRepository.findAll().forEach(System.out::println);
     }
