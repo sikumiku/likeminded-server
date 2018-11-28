@@ -1,14 +1,25 @@
 spring:
+  application:
+    name: LikeMinded
+
+spring.datasource.url: jdbc:postgresql://localhost:5438/likeminded
+spring.datasource.username: likeminded
+spring.datasource.password: password
+
+spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+spring.jpa.hibernate.ddl-auto: update
+
+spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS: false
+spring.jackson.time-zone: UTC
+
+app.jwtSecret: JWTSuperSecretKey
+app.jwtExpirationInMs: 604800000
+---
+spring:
   profiles:
-      active: spring.profiles.active
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          okta:
-#            client-id: 0oahl9drlqFZPxkUH0h7
-#            client-secret: g_3IW-P0ef8layFfmRwSj95V6HooC2hVcRRYb52_
-#            scope: openid, email, profile
-#        provider:
-#          okta:
-#            issuer-uri: https://dev-631325.oktapreview.com/oauth2/default
+    active: production
+
+  jpa:
+    hibernate:
+      ddl-auto: update
