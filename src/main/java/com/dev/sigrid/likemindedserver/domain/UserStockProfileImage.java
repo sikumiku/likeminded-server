@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_stock_image")
+@Table(name = "user_stock_profile_image")
 public class UserStockProfileImage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,11 @@ public class UserStockProfileImage implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId("stockProfileImageId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_profile_image_id")
     private StockProfileImage stockProfileImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -1,8 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
@@ -10,12 +8,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Data
@@ -41,6 +39,9 @@ public class Event implements Serializable {
     private LocalDate endDate;
     private Boolean openToPublic;
     private String imageFilePath;
+    private Boolean unlimitedParticipants;
+    private Integer maxParticipants;
+    private Long organizerUserId;
     private boolean active = true;
     @CreationTimestamp
     private LocalDateTime createdTime;
@@ -74,4 +75,22 @@ public class Event implements Serializable {
             orphanRemoval = true
     )
     private List<UserEvent> userEvents = new ArrayList<>();
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "event",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Collection<EventImage> images = new LinkedHashSet<>();
+
+    public void addImage(EventImage image) {
+        images.add(image);
+        image.setEvent(this);
+    }
+
+    public void removeImage(EventImage image) {
+        images.remove(image);
+        image.setEvent(null);
+    }
 }

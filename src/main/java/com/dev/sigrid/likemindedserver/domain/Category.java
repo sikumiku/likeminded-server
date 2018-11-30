@@ -24,8 +24,7 @@ public class Category implements Serializable {
     private Long id;
     @NonNull
     private String name;
-    @NonNull
-    private String iconFilePath;
+    private String iconFileData;
     private String description;
     private boolean active = true;
     @CreationTimestamp
