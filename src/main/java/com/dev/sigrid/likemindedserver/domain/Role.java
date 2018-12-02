@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -20,10 +21,16 @@ public class Role {
     @NonNull
     private String name;
     private String description;
-    private boolean active;
+    private boolean active = true;
     @CreationTimestamp
     private LocalDateTime createdTime;
     @UpdateTimestamp
     private LocalDateTime updatedTime;
+
+    @Builder
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
 
