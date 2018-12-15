@@ -22,7 +22,9 @@ public class StockProfileImage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    private String imageData;
+    private String name;
+    @NonNull
+    private String filePath;
     private boolean active = true;
     @CreationTimestamp
     private LocalDateTime createdTime;

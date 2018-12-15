@@ -1,0 +1,26 @@
+app.jwtSecret: JWTSuperSecretKey
+app.jwtExpirationInMs: 604800000
+---
+spring:
+  application:
+      name: LikeMinded
+
+  profiles:
+    active: production
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:postgresql://localhost:5438/likeminded
+    username: likeminded
+    password: password
+
+  jackson:
+    serialization:
+     WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC

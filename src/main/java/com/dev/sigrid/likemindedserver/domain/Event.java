@@ -11,10 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -30,13 +27,6 @@ public class Event implements Serializable {
 //    @Max(45)
     private String name;
     private String description;
-    // secondOfDay, to parse:
-    // LocalTime time = LocalTime.ofSecondOfDay(secondOfDay);
-    // int secondOfDay =  LocalTime.parse("12:34:45").toSecondOfDay();
-    private Long startTime;
-    private Long endTime;
-    private LocalDate startDate;
-    private LocalDate endDate;
     private Boolean openToPublic;
     private String imageFilePath;
     private Boolean unlimitedParticipants;
@@ -82,7 +72,15 @@ public class Event implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Collection<EventImage> images = new LinkedHashSet<>();
+    private Set<EventImage> images = new LinkedHashSet<>();
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "event",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<EventTime> eventTimes = new LinkedHashSet<>();
 
     public void addImage(EventImage image) {
         images.add(image);

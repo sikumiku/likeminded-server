@@ -38,7 +38,7 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private Date birthday;
-    private String profileImgFileData;
+    private String profileImgFilePath;
 
     @NotBlank
     private String password;
