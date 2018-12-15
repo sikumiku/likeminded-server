@@ -28,10 +28,9 @@ public class Event implements Serializable {
     private String name;
     private String description;
     private Boolean openToPublic;
-    private String imageFilePath;
+    private String photoFilePath;
     private Boolean unlimitedParticipants;
     private Integer maxParticipants;
-    private Long organizerUserId;
     private boolean active = true;
     @CreationTimestamp
     private LocalDateTime createdTime;

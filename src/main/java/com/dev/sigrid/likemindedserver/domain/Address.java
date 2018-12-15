@@ -28,10 +28,10 @@ public class Address implements Serializable {
     @NonNull
     private String city;
     @NonNull
-    private String postCode;
+    private String postcode;
     @NonNull
 //    @Max(3)
-    private String countryCode;
+    private String countrycode;
     @Builder.Default
     private boolean active = true;
     @CreationTimestamp
