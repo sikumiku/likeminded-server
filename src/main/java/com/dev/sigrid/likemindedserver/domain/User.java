@@ -26,7 +26,7 @@ import java.util.*;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String username;
@@ -35,8 +35,8 @@ public class User implements Serializable {
     @Size(max = 50)
     @Email
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private Date birthday;
     private String profileImgFilePath;
 
@@ -48,9 +48,6 @@ public class User implements Serializable {
     private LocalDateTime createdTime;
     @UpdateTimestamp
     private LocalDateTime updatedTime;
-
-    @OneToOne
-    private Address address;
 
     @OneToMany(
             mappedBy = "user",
@@ -72,9 +69,6 @@ public class User implements Serializable {
             orphanRemoval = true
     )
     private List<UserLog> userLogs = new ArrayList<>();
-
-    @OneToOne
-    private UserStockProfileImage userStockProfileImage;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,
