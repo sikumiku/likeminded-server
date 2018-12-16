@@ -1,26 +1,30 @@
 package com.dev.sigrid.likemindedserver.service;
 
-import com.dev.sigrid.likemindedserver.domain.Event;
-import com.dev.sigrid.likemindedserver.domain.User;
+import com.dev.sigrid.likemindedserver.domain.*;
 import com.dev.sigrid.likemindedserver.dto.CreateEventCommand;
 import com.dev.sigrid.likemindedserver.dto.EventDTO;
 import com.dev.sigrid.likemindedserver.dto.UpdateEventCommand;
+import com.dev.sigrid.likemindedserver.repository.CategoryRepository;
 import com.dev.sigrid.likemindedserver.repository.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service
 @Slf4j
 public class EventService {
 
     private EventRepository eventRepository;
+    private CategoryRepository categoryRepository;
 
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, CategoryRepository categoryRepository) {
         this.eventRepository = eventRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public EventDTO createEventForUser(CreateEventCommand createEventCommand, User user) {
@@ -32,6 +36,13 @@ public class EventService {
         event.setUnlimitedParticipants(createEventCommand.getUnlimitedParticipants());
         event.setMaxParticipants(createEventCommand.getMaxParticipants());
         event.setUser(user);
+
+        List<EventCategory> eventCategories = new ArrayList<>();
+        createEventCommand.getCategories().forEach(category -> eventCategories.add(EventCategory.builder()
+                .event(event)
+                .category(categoryRepository.findByName(category))
+                .build()));
+        event.setEventCategories(eventCategories);
 
         Event result = eventRepository.save(event);
 

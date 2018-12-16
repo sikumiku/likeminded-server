@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,10 +27,21 @@ public class EventCategory implements Serializable {
     private LocalDateTime updatedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("categoryId")
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @Builder
+    public EventCategory(Category category, Event event) {
+        this.category = category;
+        this.event = event;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

@@ -1,9 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -46,10 +44,18 @@ public class Category implements Serializable {
     )
     private List<GroupCategory> groupCategories = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<EventCategory> eventCategories = new ArrayList<>();
+
+    @Builder
+    public Category(String name, String description, String iconFilePath) {
+        this.name = name;
+        this.description = description;
+        this.iconFilePath = iconFilePath;
+    }
 }

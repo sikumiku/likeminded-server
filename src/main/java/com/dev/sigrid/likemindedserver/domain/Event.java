@@ -49,6 +49,7 @@ public class Event implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(
             mappedBy = "event",
@@ -80,6 +81,15 @@ public class Event implements Serializable {
             orphanRemoval = true
     )
     private Set<EventTime> eventTimes = new LinkedHashSet<>();
+
+    public List<Category> getCategories(Event event) {
+        List<EventCategory> eventCategories = event.getEventCategories();
+        List<Category> categories = new ArrayList<>();
+        eventCategories.forEach(eventCategory -> {
+            categories.add(eventCategory.getCategory());
+        });
+        return categories;
+    }
 
     public void addImage(EventImage image) {
         images.add(image);
