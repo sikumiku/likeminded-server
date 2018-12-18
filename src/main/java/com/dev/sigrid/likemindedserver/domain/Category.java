@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "category")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

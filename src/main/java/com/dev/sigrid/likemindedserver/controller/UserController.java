@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/users/me")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
         return new UserDTO(

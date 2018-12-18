@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "event_category")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EventCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
