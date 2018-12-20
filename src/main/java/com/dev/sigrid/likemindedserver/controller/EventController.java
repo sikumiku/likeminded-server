@@ -48,14 +48,14 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping("/event/{id}")
+    @GetMapping("/events/{id}")
     ResponseEntity<Event> getEvent(@PathVariable Long id) {
         Optional<Event> event = eventRepository.findById(id);
         return event.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/event")
+    @PostMapping("/events")
     @PreAuthorize("hasRole('ROLE_USER')")
     ResponseEntity<EventDTO> createEvent(@Valid @RequestBody CreateEventCommand createEventCommand,
                                          @CurrentUser UserPrincipal currentUser) throws URISyntaxException {
@@ -74,7 +74,7 @@ public class EventController {
                 .body(eventDTO);
     }
 
-    @PutMapping("/event/{id}")
+    @PutMapping("/events/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     ResponseEntity<EventDTO> updateEvent(@Valid @RequestBody UpdateEventCommand updateEventCommand,
                                          @PathVariable Long id,
@@ -100,7 +100,7 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @DeleteMapping("/event/{id}")
+    @DeleteMapping("/events/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Event> deleteEvent(@PathVariable Long id,
                                              @CurrentUser UserPrincipal currentUser) {
@@ -109,7 +109,7 @@ public class EventController {
         Optional<User> optionalUser = userRepository.findById(currentUser.getId());
         if (optionalEvent.isPresent()) {
             if (optionalUser.isPresent()) {
-                if (optionalUser.get().getId() == optionalEvent.get().getUser().getId()) {
+                if (Objects.equals(optionalUser.get().getId(), optionalEvent.get().getUser().getId())) {
                     eventRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 } else {

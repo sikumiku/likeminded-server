@@ -16,7 +16,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedOrigins("https://likeminded-client.herokuapp.com", "http://localhost:3000", "http://localhost:5000")
+                        .allowedOrigins("http://www.likeminded.ee", "https://likeminded-client.herokuapp.com", "http://localhost:3000", "http://localhost:5000")
                         .allowedHeaders("*");
             }
         };
