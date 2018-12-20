@@ -6,18 +6,16 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UserDTO {
+public class PersonDTO {
     private Long id;
     private String username;
-    private String email;
     private String firstname;
     private String lastname;
 
-    public static UserDTO to(User user) {
-        return new UserDTO(
+    public static PersonDTO to(User user) {
+        return new PersonDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getEmail(),
                 user.getFirstname(),
                 user.getLastname()
         );
