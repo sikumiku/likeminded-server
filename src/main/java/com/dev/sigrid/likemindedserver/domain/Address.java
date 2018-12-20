@@ -41,12 +41,19 @@ public class Address implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Address(String addressLine, String city, String postcode, String countrycode, User user) {
+        this.addressLine = addressLine;
+        this.city = city;
+        this.postcode = postcode;
+        this.countrycode = countrycode;
+        this.user = user;
+    }
 }

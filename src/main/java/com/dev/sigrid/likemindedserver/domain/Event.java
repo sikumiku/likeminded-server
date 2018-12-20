@@ -40,10 +40,9 @@ public class Event implements Serializable {
     private LocalDateTime updatedTime;
 
     @OneToOne(
-            fetch = FetchType.LAZY,
             cascade =  CascadeType.ALL,
+            orphanRemoval = true,
             mappedBy = "event")
-    @ToString.Exclude
     private Address address;
 
     @JsonIgnore
@@ -102,4 +101,10 @@ public class Event implements Serializable {
         images.remove(image);
         image.setEvent(null);
     }
+
+    public void addAddress(Address address) {
+        address.setEvent(this);
+        this.address = address;
+    }
+
 }

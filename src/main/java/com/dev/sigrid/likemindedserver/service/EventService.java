@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.service;
 
 import com.dev.sigrid.likemindedserver.domain.*;
+import com.dev.sigrid.likemindedserver.dto.AddressDTO;
 import com.dev.sigrid.likemindedserver.dto.CreateEventCommand;
 import com.dev.sigrid.likemindedserver.dto.EventDTO;
 import com.dev.sigrid.likemindedserver.dto.UpdateEventCommand;
@@ -35,6 +36,7 @@ public class EventService {
         event.setOpenToPublic(createEventCommand.getOpenToPublic());
         event.setUnlimitedParticipants(createEventCommand.getUnlimitedParticipants());
         event.setMaxParticipants(createEventCommand.getMaxParticipants());
+        event.addAddress(AddressDTO.dtoToDomain(createEventCommand.getAddress(), user));
         event.setUser(user);
 
         List<EventCategory> eventCategories = new ArrayList<>();
@@ -53,6 +55,18 @@ public class EventService {
         List<Event> events = eventRepository.findAll();
         List<EventDTO> eventDTOs = new ArrayList<>();
         events.forEach(event -> {
+            Address address;
+            if (event.getAddress() == null) {
+                log.info("Event no " + event.getId() + " address is null;");
+                address = new Address();
+                address.setAddressLine("");
+                address.setCity("");
+                address.setPostcode("");
+                address.setCountrycode("");
+                address.setEvent(event);
+                event.setAddress(address);
+            }
+
             eventDTOs.add(EventDTO.to(event));
         });
         return eventDTOs;

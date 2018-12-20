@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.dto;
 
+import com.dev.sigrid.likemindedserver.domain.Address;
 import com.dev.sigrid.likemindedserver.domain.Category;
 import com.dev.sigrid.likemindedserver.domain.Event;
 import com.dev.sigrid.likemindedserver.domain.EventTime;
@@ -22,6 +23,7 @@ public class EventDTO {
     private Boolean openToPublic;
     private Boolean unlimitedParticipants;
     private Integer maxParticipants;
+    private AddressDTO address;
     private List<Category> categories;
 //    private List<EventTimeDTO> eventTimes;
 
@@ -33,6 +35,7 @@ public class EventDTO {
                 event.getOpenToPublic(),
                 event.getUnlimitedParticipants(),
                 event.getMaxParticipants(),
+                AddressDTO.domainToDto(event.getAddress()),
                 event.getCategories(event)
 //                event.getEventTimes().stream().map(EventTimeDTO::to).collect(Collectors.toList())
         );
