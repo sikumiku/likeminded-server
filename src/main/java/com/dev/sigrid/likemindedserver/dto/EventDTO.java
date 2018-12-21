@@ -25,7 +25,7 @@ public class EventDTO {
     private Integer maxParticipants;
     private AddressDTO address;
     private List<Category> categories;
-//    private List<EventTimeDTO> eventTimes;
+    private List<EventTimeDTO> eventTimes;
 
     public static EventDTO to(Event event) {
         return new EventDTO(
@@ -36,8 +36,8 @@ public class EventDTO {
                 event.getUnlimitedParticipants(),
                 event.getMaxParticipants(),
                 AddressDTO.domainToDto(event.getAddress()),
-                event.getCategories(event)
-//                event.getEventTimes().stream().map(EventTimeDTO::to).collect(Collectors.toList())
+                event.getCategories(event),
+                event.getEventTimes().stream().map(EventTimeDTO::domainToDto).collect(Collectors.toList())
         );
     }
 }

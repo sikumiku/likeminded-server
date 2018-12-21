@@ -1,5 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "event_time")
+@JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer"})
 public class EventTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

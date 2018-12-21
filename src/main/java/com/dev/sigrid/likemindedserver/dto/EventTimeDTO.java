@@ -23,7 +23,7 @@ public class EventTimeDTO {
         this.endDateTime = endDateTime;
     }
 
-    static EventTimeDTO to(EventTime eventTime) {
+    static EventTimeDTO domainToDto(EventTime eventTime) {
         // secondOfDay, to parse:
         // LocalTime time = LocalTime.ofSecondOfDay(secondOfDay);
         // int secondOfDay =  LocalTime.parse("12:34:45").toSecondOfDay();

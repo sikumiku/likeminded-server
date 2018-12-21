@@ -12,8 +12,12 @@ import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -38,6 +42,20 @@ public class EventService {
         event.setMaxParticipants(createEventCommand.getMaxParticipants());
         event.addAddress(AddressDTO.dtoToDomain(createEventCommand.getAddress(), user));
         event.setUser(user);
+
+        Set<EventTime> times = new HashSet<>();
+        ZonedDateTime startDate = ZonedDateTime.parse(createEventCommand.getStartDate());
+        ZonedDateTime startTime = ZonedDateTime.parse(createEventCommand.getStartTime());
+        ZonedDateTime endDate = ZonedDateTime.parse(createEventCommand.getEndDate());
+        ZonedDateTime endTime = ZonedDateTime.parse(createEventCommand.getEndTime());
+        EventTime eventTime = new EventTime();
+        eventTime.setStartDate(startDate.toLocalDate());
+        eventTime.setEndDate(endDate.toLocalDate());
+        eventTime.setStartTime((long) startTime.toLocalTime().toSecondOfDay());
+        eventTime.setEndTime((long) endTime.toLocalTime().toSecondOfDay());
+        eventTime.setEvent(event);
+        times.add(eventTime);
+        event.setEventTimes(times);
 
         List<EventCategory> eventCategories = new ArrayList<>();
         createEventCommand.getCategories().forEach(category -> eventCategories.add(EventCategory.builder()
