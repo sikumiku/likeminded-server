@@ -2,12 +2,13 @@ package com.dev.sigrid.likemindedserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -100,6 +101,36 @@ public class User implements Serializable {
             orphanRemoval = true
     )
     private List<Event> events = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Group> groups = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserCategory> userCategories = new ArrayList<>();
+
+    public void setCategories(List<UserCategory> categories) {
+        this.userCategories.clear();
+        this.userCategories.addAll(categories);
+    }
+
+    public List<Category> getCategories(User user) {
+        List<UserCategory> userCategories = user.getUserCategories();
+        List<Category> categories = new ArrayList<>();
+        userCategories.forEach(userCategory -> {
+            categories.add(userCategory.getCategory());
+        });
+        return categories;
+    }
 
     @Builder
     public User(String username, String email, String password) {

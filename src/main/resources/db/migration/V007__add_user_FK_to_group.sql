@@ -1,0 +1,2 @@
+ALTER TABLE "group"
+  ADD COLUMN user_id INT NOT NULL DEFAULT 0;

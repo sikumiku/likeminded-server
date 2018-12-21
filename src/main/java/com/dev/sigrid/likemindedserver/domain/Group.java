@@ -44,6 +44,11 @@ public class Group implements Serializable {
     private List<UserGroup> userGroups = new ArrayList<>();
 
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonIgnore
     @OneToMany(
             mappedBy = "group",
             cascade = CascadeType.ALL,

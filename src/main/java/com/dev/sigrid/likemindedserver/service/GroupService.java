@@ -31,6 +31,7 @@ public class GroupService {
         Group group = new Group();
         group.setName(createGroupCommand.getName());
         group.setDescription(createGroupCommand.getDescription());
+        group.setUser(user);
 
         List<GroupCategory> groupCategories = new ArrayList<>();
         createGroupCommand.getCategories().forEach(category -> groupCategories.add(GroupCategory.builder()
