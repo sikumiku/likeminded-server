@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -32,6 +33,7 @@ public class Game implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "game",
             cascade = CascadeType.ALL,
@@ -39,6 +41,7 @@ public class Game implements Serializable {
     )
     private List<FavoriteGame> favoriteGame = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "game",
             cascade = CascadeType.ALL,

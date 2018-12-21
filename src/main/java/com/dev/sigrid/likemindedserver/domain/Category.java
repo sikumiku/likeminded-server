@@ -32,6 +32,7 @@ public class Category implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "category",
             cascade = CascadeType.ALL,
@@ -39,6 +40,7 @@ public class Category implements Serializable {
     )
     private List<GameCategory> gameCategories = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "category",
             cascade = CascadeType.ALL,

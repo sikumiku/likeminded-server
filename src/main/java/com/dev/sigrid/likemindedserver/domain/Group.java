@@ -1,5 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "`group`")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Group implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +35,7 @@ public class Group implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "group",
             cascade = CascadeType.ALL,
@@ -39,10 +43,20 @@ public class Group implements Serializable {
     )
     private List<UserGroup> userGroups = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "group",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<GroupCategory> groupCategories = new ArrayList<>();
+
+    public List<Category> getCategories(Group group) {
+        List<GroupCategory> groupCategories = group.getGroupCategories();
+        List<Category> categories = new ArrayList<>();
+        groupCategories.forEach(groupCategory -> {
+            categories.add(groupCategory.getCategory());
+        });
+        return categories;
+    }
 }

@@ -59,6 +59,7 @@ public class Event implements Serializable {
     )
     private List<EventCategory> eventCategories = new ArrayList<>();
 
+    @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(
             mappedBy = "event",
@@ -67,6 +68,7 @@ public class Event implements Serializable {
     )
     private List<UserEvent> userEvents = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "event",
@@ -75,6 +77,7 @@ public class Event implements Serializable {
     )
     private Set<EventImage> images = new LinkedHashSet<>();
 
+    @JsonIgnore
     @OneToMany(
             fetch = FetchType.EAGER,
             mappedBy = "event",

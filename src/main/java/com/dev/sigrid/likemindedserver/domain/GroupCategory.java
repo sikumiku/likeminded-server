@@ -1,6 +1,8 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "group_category")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class GroupCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +29,21 @@ public class GroupCategory implements Serializable {
     private LocalDateTime updatedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("id")
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("id")
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @Builder
+    public GroupCategory(Category category, Group group) {
+        this.category = category;
+        this.group = group;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

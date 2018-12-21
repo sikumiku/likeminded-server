@@ -50,6 +50,7 @@ public class User implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -57,6 +58,7 @@ public class User implements Serializable {
     )
     private List<UserGroup> userGroups = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -64,6 +66,7 @@ public class User implements Serializable {
     )
     private List<FavoriteGame> favoriteGames = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -82,6 +85,7 @@ public class User implements Serializable {
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,

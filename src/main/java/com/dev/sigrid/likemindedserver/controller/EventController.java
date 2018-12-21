@@ -71,7 +71,7 @@ public class EventController {
 
         EventDTO eventDTO = eventService.createEventForUser(createEventCommand, user);
 
-        return ResponseEntity.created(new URI("/api/v1/event/" + eventDTO.getId()))
+        return ResponseEntity.created(new URI("/api/v1/events/" + eventDTO.getId()))
                 .body(eventDTO);
     }
 

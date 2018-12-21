@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -31,6 +32,7 @@ public class StockProfileImage implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "stockProfileImage",
             cascade = CascadeType.ALL,

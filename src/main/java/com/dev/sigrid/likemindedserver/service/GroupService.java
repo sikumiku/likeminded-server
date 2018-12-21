@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.service;
 
 import com.dev.sigrid.likemindedserver.domain.Group;
+import com.dev.sigrid.likemindedserver.domain.GroupCategory;
 import com.dev.sigrid.likemindedserver.domain.User;
 import com.dev.sigrid.likemindedserver.dto.CreateGroupCommand;
 import com.dev.sigrid.likemindedserver.dto.GroupDTO;
@@ -30,6 +31,13 @@ public class GroupService {
         Group group = new Group();
         group.setName(createGroupCommand.getName());
         group.setDescription(createGroupCommand.getDescription());
+
+        List<GroupCategory> groupCategories = new ArrayList<>();
+        createGroupCommand.getCategories().forEach(category -> groupCategories.add(GroupCategory.builder()
+                .group(group)
+                .category(categoryRepository.findByName(category))
+                .build()));
+        group.setGroupCategories(groupCategories);
 
         Group result = groupRepository.save(group);
 
