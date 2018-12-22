@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.controller;
 
 import com.dev.sigrid.likemindedserver.domain.User;
+import com.dev.sigrid.likemindedserver.dto.FullUserDTO;
 import com.dev.sigrid.likemindedserver.dto.UpdateUserCommand;
 import com.dev.sigrid.likemindedserver.dto.UserDTO;
 import com.dev.sigrid.likemindedserver.repository.UserRepository;
@@ -46,9 +47,17 @@ public class UserController {
         );
     }
 
+    @GetMapping("/users/me/full")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<FullUserDTO> getFullCurrentUserData(@CurrentUser UserPrincipal currentUser) {
+        User user = userRepository.getOne(currentUser.getId());
+        FullUserDTO result = userService.getFullUser(user);
+        return ResponseEntity.ok(result);
+    }
+
     @PutMapping("/users/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserCommand updateUserCommand,
+    ResponseEntity<FullUserDTO> updateUser(@Valid @RequestBody UpdateUserCommand updateUserCommand,
                                         @PathVariable Long id,
                                         @CurrentUser UserPrincipal currentUser) {
         log.info("Request to update group: {}", updateUserCommand);
@@ -70,5 +79,14 @@ public class UserController {
             return ResponseEntity.ok(userService.updateUser(updateUserCommand, updateableUser));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @DeleteMapping("/users/me/favoriteGames")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<FullUserDTO> deleteFavoriteGame(@RequestParam("gameName") String gameName,
+                                             @CurrentUser UserPrincipal currentUser) {
+        log.info("Request to delete favorite game: {}", gameName);
+        User user = userRepository.getOne(currentUser.getId());
+        return ResponseEntity.ok(userService.deleteFavoriteGame(gameName, user));
     }
 }

@@ -12,7 +12,7 @@ public class AddressDTO {
     private String addressLine;
     private String city;
     private String postcode;
-    private String country;
+    private String countrycode;
 
     public static AddressDTO domainToDto(Address address) {
         return new AddressDTO(
@@ -28,7 +28,7 @@ public class AddressDTO {
                 address.getAddressLine(),
                 address.getCity(),
                 address.getPostcode(),
-                address.getCountry(),
+                address.getCountrycode(),
                 user
         );
     }

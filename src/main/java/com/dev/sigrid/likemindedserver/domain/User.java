@@ -53,6 +53,13 @@ public class User implements Serializable {
     private LocalDateTime updatedTime;
 
     @JsonIgnore
+    @OneToOne(
+            cascade =  CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "user")
+    private Address address;
+
+    @JsonIgnore
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
