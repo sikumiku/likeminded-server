@@ -1,6 +1,8 @@
 package com.dev.sigrid.likemindedserver.dto;
 
 import com.dev.sigrid.likemindedserver.domain.Category;
+import com.dev.sigrid.likemindedserver.domain.FavoriteGame;
+import com.dev.sigrid.likemindedserver.domain.Game;
 import com.dev.sigrid.likemindedserver.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,14 +17,17 @@ public class PersonDTO {
     private String firstname;
     private String lastname;
     private List<Category> categories;
+    private List<Game> favoriteGames;
 
     public static PersonDTO to(User user) {
+        System.out.println(user);
         return new PersonDTO(
                 user.getId(),
                 user.getUsername(),
                 user.getFirstname(),
                 user.getLastname(),
-                user.getCategories(user)
+                user.getCategories(user),
+                user.getFavoriteGames(user)
         );
     }
 }

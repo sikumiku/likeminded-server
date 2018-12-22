@@ -21,9 +21,13 @@ public class PeopleService {
     }
 
     public List<PersonDTO> getAllPeople() {
+        System.out.println("fetching users");
         List<User> users = userRepository.findAll();
+        System.out.println(users);
         List<PersonDTO> personDTOs = new ArrayList<>();
-        users.forEach(user -> personDTOs.add(PersonDTO.to(user)));
+        users.forEach(user -> {
+            personDTOs.add(PersonDTO.to(user));
+        });
         return personDTOs;
     }
 }

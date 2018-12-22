@@ -39,7 +39,7 @@ public class Game implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<FavoriteGame> favoriteGame = new ArrayList<>();
+    private List<FavoriteGame> favoriteGames = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(
@@ -48,4 +48,14 @@ public class Game implements Serializable {
             orphanRemoval = true
     )
     private List<GameCategory> gameCategories = new ArrayList<>();
+
+    public Game(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

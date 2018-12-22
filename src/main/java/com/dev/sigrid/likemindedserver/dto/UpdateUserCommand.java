@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.dto;
 
+import com.dev.sigrid.likemindedserver.domain.Game;
 import lombok.Data;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public class UpdateUserCommand {
     private String firstname;
     private String lastname;
     private List<String> categories;
+    private List<GameDTO> favoriteGames;
 }

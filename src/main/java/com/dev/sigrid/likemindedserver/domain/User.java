@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -130,6 +131,17 @@ public class User implements Serializable {
             categories.add(userCategory.getCategory());
         });
         return categories;
+    }
+
+    public List<Game> getFavoriteGames(User user) {
+        List<FavoriteGame> favoriteGames = user.getFavoriteGames();
+        List<Game> games = new ArrayList<>();
+        if (favoriteGames != null) {
+            favoriteGames.forEach(favoriteGame -> {
+                games.add(favoriteGame.getGame());
+            });
+        }
+        return games;
     }
 
     @Builder

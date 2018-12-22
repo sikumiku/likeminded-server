@@ -1,6 +1,7 @@
 package com.dev.sigrid.likemindedserver.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,11 +26,16 @@ public class FavoriteGame implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("gameId")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "game_id")
     private Game game;
+
+    public FavoriteGame(Game game, User user) {
+        this.game = game;
+        this.user = user;
+    }
 }
