@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.service;
 
+import com.dev.sigrid.likemindedserver.domain.Address;
 import com.dev.sigrid.likemindedserver.domain.Group;
 import com.dev.sigrid.likemindedserver.domain.GroupCategory;
 import com.dev.sigrid.likemindedserver.domain.User;
@@ -45,6 +46,11 @@ public class GroupService {
         return GroupDTO.to(result);
     }
 
+    public List<GroupDTO> getGroupsForUser(User user) {
+        List<Group> groups = groupRepository.findAllByUserId(user.getId());
+        return convertGroupsToDtos(groups);
+    }
+
     public List<GroupDTO> getAllGroups() {
         List<Group> groups = groupRepository.findAll();
         List<GroupDTO> groupDTOs = new ArrayList<>();
@@ -57,6 +63,14 @@ public class GroupService {
         group.setDescription(groupChanges.getDescription());
         Group updatedGroup = groupRepository.save(group);
         return GroupDTO.to(updatedGroup);
+    }
+
+    private List<GroupDTO> convertGroupsToDtos(List<Group> groups) {
+        List<GroupDTO> groupDTOs = new ArrayList<>();
+        groups.forEach(group -> {
+            groupDTOs.add(GroupDTO.to(group));
+        });
+        return groupDTOs;
     }
 
 }

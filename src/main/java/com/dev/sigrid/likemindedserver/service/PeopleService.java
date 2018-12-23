@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.service;
 
+import com.dev.sigrid.likemindedserver.domain.Address;
 import com.dev.sigrid.likemindedserver.domain.User;
 import com.dev.sigrid.likemindedserver.dto.PersonDTO;
 import com.dev.sigrid.likemindedserver.repository.UserRepository;
@@ -21,11 +22,20 @@ public class PeopleService {
     }
 
     public List<PersonDTO> getAllPeople() {
-        System.out.println("fetching users");
         List<User> users = userRepository.findAll();
-        System.out.println(users);
         List<PersonDTO> personDTOs = new ArrayList<>();
         users.forEach(user -> {
+            Address address;
+            if (user.getAddress() == null) {
+                address = new Address();
+                address.setAddressLine("");
+                address.setCity("");
+                address.setPostcode("");
+                address.setCountrycode("");
+                address.setUser(user);
+                user.setAddress(address);
+            }
+
             personDTOs.add(PersonDTO.to(user));
         });
         return personDTOs;

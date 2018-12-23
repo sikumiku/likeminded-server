@@ -81,11 +81,6 @@ public class EventService {
         return convertEventsToDtos(events);
     }
 
-    public List<GroupDTO> getGroupsForUser(User user) {
-        List<Group> groups = groupRepository.findAllByUserId(user.getId());
-        return convertGroupsToDtos(groups);
-    }
-
     public EventDTO updateEvent(UpdateEventCommand eventChanges, Event event) {
         event.setName(eventChanges.getName());
         event.setDescription(eventChanges.getDescription());
@@ -114,14 +109,6 @@ public class EventService {
             eventDTOs.add(EventDTO.to(event));
         });
         return eventDTOs;
-    }
-
-    private List<GroupDTO> convertGroupsToDtos(List<Group> groups) {
-        List<GroupDTO> groupDTOs = new ArrayList<>();
-        groups.forEach(group -> {
-            groupDTOs.add(GroupDTO.to(group));
-        });
-        return groupDTOs;
     }
 
 }

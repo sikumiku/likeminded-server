@@ -16,6 +16,7 @@ public class PersonDTO {
     private String username;
     private String firstname;
     private String lastname;
+    private AddressDTO address;
     private List<Category> categories;
     private List<Game> favoriteGames;
 
@@ -25,6 +26,7 @@ public class PersonDTO {
                 user.getUsername(),
                 user.getFirstname(),
                 user.getLastname(),
+                AddressDTO.domainToDto(user.getAddress()),
                 user.getCategories(user),
                 user.getFavoriteGames(user)
         );

@@ -6,6 +6,7 @@ import com.dev.sigrid.likemindedserver.repository.UserRepository;
 import com.dev.sigrid.likemindedserver.security.CurrentUser;
 import com.dev.sigrid.likemindedserver.security.UserPrincipal;
 import com.dev.sigrid.likemindedserver.service.EventService;
+import com.dev.sigrid.likemindedserver.service.GroupService;
 import com.dev.sigrid.likemindedserver.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,15 +28,18 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final EventService eventService;
+    private final GroupService groupService;
 
     @Autowired
     public UserController(UserRepository userRepository,
                           UserService userService,
-                          EventService eventService)
+                          EventService eventService,
+                          GroupService groupService)
     {
         this.userRepository = userRepository;
         this.userService = userService;
         this.eventService = eventService;
+        this.groupService = groupService;
     }
 
     @GetMapping("/users/me")
@@ -71,7 +75,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<GroupDTO>> getGroupsForCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
-        List<GroupDTO> result = eventService.getGroupsForUser(user);
+        List<GroupDTO> result = groupService.getGroupsForUser(user);
         return ResponseEntity.ok(result);
     }
 
