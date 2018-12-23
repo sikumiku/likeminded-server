@@ -1,12 +1,11 @@
 package com.dev.sigrid.likemindedserver.controller;
 
 import com.dev.sigrid.likemindedserver.domain.User;
-import com.dev.sigrid.likemindedserver.dto.FullUserDTO;
-import com.dev.sigrid.likemindedserver.dto.UpdateUserCommand;
-import com.dev.sigrid.likemindedserver.dto.UserDTO;
+import com.dev.sigrid.likemindedserver.dto.*;
 import com.dev.sigrid.likemindedserver.repository.UserRepository;
 import com.dev.sigrid.likemindedserver.security.CurrentUser;
 import com.dev.sigrid.likemindedserver.security.UserPrincipal;
+import com.dev.sigrid.likemindedserver.service.EventService;
 import com.dev.sigrid.likemindedserver.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,12 +26,16 @@ public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
     private final UserService userService;
+    private final EventService eventService;
 
     @Autowired
     public UserController(UserRepository userRepository,
-                          UserService userService) {
+                          UserService userService,
+                          EventService eventService)
+    {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.eventService = eventService;
     }
 
     @GetMapping("/users/me")
@@ -52,6 +56,22 @@ public class UserController {
     public ResponseEntity<FullUserDTO> getFullCurrentUserData(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
         FullUserDTO result = userService.getFullUser(user);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/users/me/events")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<EventDTO>> getEventsForCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        User user = userRepository.getOne(currentUser.getId());
+        List<EventDTO> result = eventService.getEventsForUser(user);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/users/me/groups")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<GroupDTO>> getGroupsForCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        User user = userRepository.getOne(currentUser.getId());
+        List<GroupDTO> result = eventService.getGroupsForUser(user);
         return ResponseEntity.ok(result);
     }
 

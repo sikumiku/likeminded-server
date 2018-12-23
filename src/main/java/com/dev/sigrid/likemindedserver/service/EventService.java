@@ -1,12 +1,10 @@
 package com.dev.sigrid.likemindedserver.service;
 
 import com.dev.sigrid.likemindedserver.domain.*;
-import com.dev.sigrid.likemindedserver.dto.AddressDTO;
-import com.dev.sigrid.likemindedserver.dto.CreateEventCommand;
-import com.dev.sigrid.likemindedserver.dto.EventDTO;
-import com.dev.sigrid.likemindedserver.dto.UpdateEventCommand;
+import com.dev.sigrid.likemindedserver.dto.*;
 import com.dev.sigrid.likemindedserver.repository.CategoryRepository;
 import com.dev.sigrid.likemindedserver.repository.EventRepository;
+import com.dev.sigrid.likemindedserver.repository.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
@@ -26,10 +24,14 @@ public class EventService {
 
     private EventRepository eventRepository;
     private CategoryRepository categoryRepository;
+    private GroupRepository groupRepository;
 
-    public EventService(EventRepository eventRepository, CategoryRepository categoryRepository) {
+    public EventService(EventRepository eventRepository,
+                        CategoryRepository categoryRepository,
+                        GroupRepository groupRepository) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
+        this.groupRepository = groupRepository;
     }
 
     public EventDTO createEventForUser(CreateEventCommand createEventCommand, User user) {
@@ -71,11 +73,35 @@ public class EventService {
 
     public List<EventDTO> getAllEvents() {
         List<Event> events = eventRepository.findAll();
+        return convertEventsToDtos(events);
+    }
+
+    public List<EventDTO> getEventsForUser(User user) {
+        List<Event> events = eventRepository.findAllByUserId(user.getId());
+        return convertEventsToDtos(events);
+    }
+
+    public List<GroupDTO> getGroupsForUser(User user) {
+        List<Group> groups = groupRepository.findAllByUserId(user.getId());
+        return convertGroupsToDtos(groups);
+    }
+
+    public EventDTO updateEvent(UpdateEventCommand eventChanges, Event event) {
+        event.setName(eventChanges.getName());
+        event.setDescription(eventChanges.getDescription());
+        event.setOpenToPublic(eventChanges.getOpenToPublic());
+        event.setMaxParticipants(eventChanges.getMaxParticipants());
+        event.setUnlimitedParticipants(eventChanges.getUnlimitedParticipants());
+
+        Event updatedEvent = eventRepository.save(event);
+        return EventDTO.to(updatedEvent);
+    }
+
+    private List<EventDTO> convertEventsToDtos(List<Event> events) {
         List<EventDTO> eventDTOs = new ArrayList<>();
         events.forEach(event -> {
             Address address;
             if (event.getAddress() == null) {
-                log.info("Event no " + event.getId() + " address is null;");
                 address = new Address();
                 address.setAddressLine("");
                 address.setCity("");
@@ -90,15 +116,12 @@ public class EventService {
         return eventDTOs;
     }
 
-    public EventDTO updateEvent(UpdateEventCommand eventChanges, Event event) {
-        event.setName(eventChanges.getName());
-        event.setDescription(eventChanges.getDescription());
-        event.setOpenToPublic(eventChanges.getOpenToPublic());
-        event.setMaxParticipants(eventChanges.getMaxParticipants());
-        event.setUnlimitedParticipants(eventChanges.getUnlimitedParticipants());
-
-        Event updatedEvent = eventRepository.save(event);
-        return EventDTO.to(updatedEvent);
+    private List<GroupDTO> convertGroupsToDtos(List<Group> groups) {
+        List<GroupDTO> groupDTOs = new ArrayList<>();
+        groups.forEach(group -> {
+            groupDTOs.add(GroupDTO.to(group));
+        });
+        return groupDTOs;
     }
 
 }
