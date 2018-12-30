@@ -6,6 +6,7 @@ import com.dev.sigrid.likemindedserver.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true
 )
+@Profile(value = {"development", "production"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -80,24 +82,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 // TODO: delete in production
                 .antMatchers("/api/v1/**").permitAll()
-
                 .antMatchers("/**").authenticated();
 
-
-        // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-//    @Bean
-//    public RequestCache refererRequestCache() {
-//        return new HttpSessionRequestCache() {
-//            @Override
-//            public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
-//                String referrer = request.getHeader("referer");
-//                if (referrer != null) {
-//                    request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST", new SimpleSavedRequest(referrer));
-//                }
-//            }
-//        };
-//    }
 }

@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,6 +28,17 @@ public class UserEvent {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("eventId")
+    @JoinColumn(name = "event_id")
     private Event event;
+
+    @Builder
+    public UserEvent(Event event, User user) {
+        this.event = event;
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

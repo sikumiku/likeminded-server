@@ -19,4 +19,5 @@ public class CreateEventCommand {
     private String startTime;
     private String endDate;
     private String endTime;
+    private String picture;
 }

@@ -9,6 +9,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -109,5 +111,8 @@ public class Event implements Serializable {
         address.setEvent(this);
         this.address = address;
     }
-
+    @Override
+    public String toString() {
+        return "";
+    }
 }

@@ -21,6 +21,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Controller for anything user related
+ * getCurrentUser(UserPrincipal), getFullCurrentUserData(UserPrincipal),
+ * getEventsForCurrentUser(UserPrincipal), getGroupsForCurrentUser(UserPrincipal),
+ * updateUser(UpdateUserCommand, Long, UserPrincipal), deleteFavoriteGame(String, UserPrincipal)
+ */
 @RestController
 @RequestMapping("api/v1")
 public class UserController {
@@ -51,7 +57,8 @@ public class UserController {
                 user.getUsername(),
                 user.getEmail(),
                 user.getFirstname(),
-                user.getLastname()
+                user.getLastname(),
+                user.getProfileImgFilePath()
         );
     }
 

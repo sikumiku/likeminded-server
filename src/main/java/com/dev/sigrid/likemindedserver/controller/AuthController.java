@@ -27,6 +27,10 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
+/**
+ * Controller for dealing with authentication
+ * Login, signup and logout
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

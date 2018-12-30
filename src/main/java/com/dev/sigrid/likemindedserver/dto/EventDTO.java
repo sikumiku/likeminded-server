@@ -26,6 +26,7 @@ public class EventDTO {
     private AddressDTO address;
     private List<Category> categories;
     private List<EventTimeDTO> eventTimes;
+    private String imageBase64;
 
     public static EventDTO to(Event event) {
         return new EventDTO(
@@ -37,7 +38,8 @@ public class EventDTO {
                 event.getMaxParticipants(),
                 AddressDTO.domainToDto(event.getAddress()),
                 event.getCategories(event),
-                event.getEventTimes().stream().map(EventTimeDTO::domainToDto).collect(Collectors.toList())
+                event.getEventTimes().stream().map(EventTimeDTO::domainToDto).collect(Collectors.toList()),
+                event.getPhotoFilePath()
         );
     }
 }

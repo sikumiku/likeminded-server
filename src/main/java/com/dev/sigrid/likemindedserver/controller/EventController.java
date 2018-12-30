@@ -25,6 +25,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Controller for anything event related
+ * getAllEvents(), getEvent(Long), createEvent(CreateEventCommand, UserPrincipal),
+ * updateEvent(UpdateEventCommand, Long, UserPrincipal), deleteEvent(Long, UserPrincipal)
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class EventController {
@@ -43,14 +48,14 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    ResponseEntity<List<EventDTO>> events() {
+    public ResponseEntity<List<EventDTO>> getAllEvents() {
         System.out.println("fetching events");
         List<EventDTO> events = eventService.getAllEvents();
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("/events/{id}")
-    ResponseEntity<Event> getEvent(@PathVariable Long id) {
+    public ResponseEntity<Event> getEvent(@PathVariable Long id) {
         Optional<Event> event = eventRepository.findById(id);
         return event.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -67,12 +72,39 @@ public class EventController {
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
         }
-        // TODO: look if event by same name already exists
 
         EventDTO eventDTO = eventService.createEventForUser(createEventCommand, user);
 
         return ResponseEntity.created(new URI("/api/v1/events/" + eventDTO.getId()))
                 .body(eventDTO);
+    }
+
+    @PutMapping("/events/{id}/invite")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    ResponseEntity<EventDTO> addUsersToEvent(@Valid @PathVariable Long id, @RequestParam("userIds") List<Long> userIds,
+                                             @RequestParam("groupIds") List<Long> groupIds,
+                                             @CurrentUser UserPrincipal currentUser) throws URISyntaxException {
+        log.info("Request to add user with ids {} to event id {}", userIds, id);
+        log.info("Request to add groups with ids {} to event id {}", groupIds, id);
+
+        Event event;
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            event = optionalEvent.get();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<User> optionalUser = userRepository.findById(currentUser.getId());
+        User user = null;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        }
+
+        if (user != null && Objects.equals(event.getUser().getId(), user.getId())) {
+            return ResponseEntity.ok(eventService.addUsersToEvent(event, userIds, groupIds));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PutMapping("/events/{id}")

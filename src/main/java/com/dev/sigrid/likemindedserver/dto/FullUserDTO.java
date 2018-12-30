@@ -21,6 +21,7 @@ public class FullUserDTO {
 //    private Date birthday;
     private List<Category> categories;
     private List<Game> favoriteGames;
+    private String imageBase64;
 
     public static FullUserDTO domainToDto(User user) {
         return new FullUserDTO(
@@ -30,7 +31,8 @@ public class FullUserDTO {
                 user.getLastname(),
                 user.getAddress(),
                 user.getCategories(user),
-                user.getFavoriteGames(user)
+                user.getFavoriteGames(user),
+                user.getProfileImgFilePath()
         );
     }
 }

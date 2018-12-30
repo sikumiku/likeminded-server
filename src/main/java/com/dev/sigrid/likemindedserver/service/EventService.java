@@ -5,17 +5,14 @@ import com.dev.sigrid.likemindedserver.dto.*;
 import com.dev.sigrid.likemindedserver.repository.CategoryRepository;
 import com.dev.sigrid.likemindedserver.repository.EventRepository;
 import com.dev.sigrid.likemindedserver.repository.GroupRepository;
+import com.dev.sigrid.likemindedserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -25,13 +22,16 @@ public class EventService {
     private EventRepository eventRepository;
     private CategoryRepository categoryRepository;
     private GroupRepository groupRepository;
+    private UserRepository userRepository;
 
     public EventService(EventRepository eventRepository,
                         CategoryRepository categoryRepository,
-                        GroupRepository groupRepository) {
+                        GroupRepository groupRepository,
+                        UserRepository userRepository) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
         this.groupRepository = groupRepository;
+        this.userRepository = userRepository;
     }
 
     public EventDTO createEventForUser(CreateEventCommand createEventCommand, User user) {
@@ -66,6 +66,8 @@ public class EventService {
                 .build()));
         event.setEventCategories(eventCategories);
 
+        event.setPhotoFilePath(createEventCommand.getPicture());
+
         Event result = eventRepository.save(event);
 
         return EventDTO.to(result);
@@ -90,6 +92,42 @@ public class EventService {
 
         Event updatedEvent = eventRepository.save(event);
         return EventDTO.to(updatedEvent);
+    }
+
+    public EventDTO addUsersToEvent(Event event, List<Long> userIds, List<Long> groupIds) {
+        //clear duplicates
+        Set<Long> userSet = new HashSet<>(userIds);
+        userIds.clear();
+        userIds.addAll(userSet);
+        Set<Long> groupSet = new HashSet<>(groupIds);
+        groupIds.clear();
+        groupIds.addAll(groupSet);
+
+        //get userIds from groups
+        List<Group> groups = groupRepository.findAllById(groupIds);
+        groups.forEach(group -> userIds.add(group.getUser().getId()));
+
+        List<UserEvent> eventUsers = event.getUserEvents();
+        List<User> users = eventUsers.stream()
+                .map(UserEvent::getUser)
+                .collect(Collectors.toList());
+        userIds.forEach(userId -> {
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (!users.contains(user)) {
+                    eventUsers.add(UserEvent.builder()
+                            .user(user)
+                            .event(event)
+                            .build());
+                }
+            }
+        });
+
+        event.setUserEvents(eventUsers);
+        eventRepository.save(event);
+
+        return EventDTO.to(event);
     }
 
     private List<EventDTO> convertEventsToDtos(List<Event> events) {

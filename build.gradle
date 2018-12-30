@@ -42,7 +42,13 @@ dependencies {
 	compile 'org.uberiron.gradle:gradleFrontendPlugin:1.0.0'
 	compile("org.postgresql:postgresql:9.4.1212")
 
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
+	testCompile('junit:junit:4.12')
+	testCompile('org.hsqldb:hsqldb')
+	testCompile('org.codehaus.groovy:groovy-all:2.4.4')
+	testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+
 	compileOnly('org.projectlombok:lombok')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

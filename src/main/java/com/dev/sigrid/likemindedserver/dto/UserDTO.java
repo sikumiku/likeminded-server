@@ -12,6 +12,7 @@ public class UserDTO {
     private String email;
     private String firstname;
     private String lastname;
+    private String imageBase64;
 
     public static UserDTO to(User user) {
         return new UserDTO(
@@ -19,7 +20,8 @@ public class UserDTO {
                 user.getUsername(),
                 user.getEmail(),
                 user.getFirstname(),
-                user.getLastname()
+                user.getLastname(),
+                user.getProfileImgFilePath()
         );
     }
 }

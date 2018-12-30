@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.controller;
 
+import com.dev.sigrid.likemindedserver.domain.Event;
 import com.dev.sigrid.likemindedserver.domain.Group;
 import com.dev.sigrid.likemindedserver.domain.User;
 import com.dev.sigrid.likemindedserver.dto.CreateGroupCommand;
@@ -24,6 +25,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Controller for anything group related
+ * getAllGroups(), getGroup(Long), createGroup(CreateGroupCommand, UserPrincipal),
+ * updateGroup(UpdateGroupCommand, Long, UserPrincipal), deleteGroup(Long, UserPrincipal)
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class GroupController {
@@ -86,16 +92,15 @@ public class GroupController {
         } else {
             return ResponseEntity.notFound().build();
         }
-//        Optional<User> optionalUser = userRepository.findById(currentUser.getId());
-//        User user = null;
-//        if (optionalUser.isPresent()) {
-//            user = optionalUser.get();
-//        }
-        // group does not have associated user yet
-//        if (user != null && Objects.equals(group.getUser().getId(), user.getId())) {
+        Optional<User> optionalUser = userRepository.findById(currentUser.getId());
+        User user = null;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        }
+        if (user != null && Objects.equals(group.getUser().getId(), user.getId())) {
             return ResponseEntity.ok(groupService.updateGroup(updateGroupCommand, group));
-//        }
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @DeleteMapping("/groups/{id}")
@@ -107,13 +112,12 @@ public class GroupController {
         Optional<User> optionalUser = userRepository.findById(currentUser.getId());
         if (optionalGroup.isPresent()) {
             if (optionalUser.isPresent()) {
-                // no user associated with a group just yet
-//                if (optionalUser.get().getId() == optionalGroup.get().getUser().getId()) {
+                if (optionalUser.get().getId() == optionalGroup.get().getUser().getId()) {
                     groupRepository.deleteById(id);
                     return ResponseEntity.ok().build();
-//                } else {
-//                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//                }
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
             }
         }
         return ResponseEntity.notFound().build();
