@@ -14,13 +14,15 @@ public class GroupDTO {
     private String name;
     private String description;
     private List<Category> categories;
+    private String imageBase64;
 
     public static GroupDTO to(Group group) {
         return new GroupDTO(
                 group.getId(),
                 group.getName(),
                 group.getDescription(),
-                group.getCategories(group)
+                group.getCategories(group),
+                group.getImageFilePath()
         );
     }
 }

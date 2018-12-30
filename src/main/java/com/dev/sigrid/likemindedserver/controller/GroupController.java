@@ -79,6 +79,32 @@ public class GroupController {
                 .body(groupDTO);
     }
 
+    @PutMapping("/groups/{id}/invite")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    ResponseEntity<GroupDTO> addUsersToGroup(@Valid @PathVariable Long id, @RequestParam("userIds") List<Long> userIds,
+                                             @CurrentUser UserPrincipal currentUser) throws URISyntaxException {
+        log.info("Request to add user with ids {} to event id {}", userIds, id);
+
+        Group group;
+        Optional<Group> optionalGroup = groupRepository.findById(id);
+        if (optionalGroup.isPresent()) {
+            group = optionalGroup.get();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<User> optionalUser = userRepository.findById(currentUser.getId());
+        User user = null;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        }
+
+        if (user != null && Objects.equals(group.getUser().getId(), user.getId())) {
+            return ResponseEntity.ok(groupService.addUsersToGroup(group, userIds));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     @PutMapping("/groups/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     ResponseEntity<GroupDTO> updateGroup(@Valid @RequestBody CreateGroupCommand updateGroupCommand,

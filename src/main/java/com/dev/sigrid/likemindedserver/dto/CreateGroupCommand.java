@@ -9,4 +9,5 @@ public class CreateGroupCommand {
     private String name;
     private String description;
     private List<String> categories;
+    private String picture;
 }

@@ -1,9 +1,6 @@
 package com.dev.sigrid.likemindedserver.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,6 +27,17 @@ public class UserGroup implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("groupId")
+    @JoinColumn(name = "group_id")
     private Group group;
+
+    @Builder
+    public UserGroup(Group group, User user) {
+        this.group = group;
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

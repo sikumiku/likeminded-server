@@ -1,19 +1,17 @@
 package com.dev.sigrid.likemindedserver.service;
 
-import com.dev.sigrid.likemindedserver.domain.Address;
-import com.dev.sigrid.likemindedserver.domain.Group;
-import com.dev.sigrid.likemindedserver.domain.GroupCategory;
-import com.dev.sigrid.likemindedserver.domain.User;
+import com.dev.sigrid.likemindedserver.domain.*;
 import com.dev.sigrid.likemindedserver.dto.CreateGroupCommand;
 import com.dev.sigrid.likemindedserver.dto.GroupDTO;
 import com.dev.sigrid.likemindedserver.repository.CategoryRepository;
 import com.dev.sigrid.likemindedserver.repository.GroupRepository;
+import com.dev.sigrid.likemindedserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -21,10 +19,14 @@ import java.util.List;
 public class GroupService {
     private GroupRepository groupRepository;
     private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
 
-    public GroupService(GroupRepository groupRepository, CategoryRepository categoryRepository) {
+    public GroupService(GroupRepository groupRepository,
+                        CategoryRepository categoryRepository,
+                        UserRepository userRepository) {
         this.groupRepository = groupRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     public GroupDTO createGroupForUser(CreateGroupCommand createGroupCommand, User user) {
@@ -40,6 +42,8 @@ public class GroupService {
                 .category(categoryRepository.findByName(category))
                 .build()));
         group.setGroupCategories(groupCategories);
+
+        group.setImageFilePath(createGroupCommand.getPicture());
 
         Group result = groupRepository.save(group);
 
@@ -63,6 +67,35 @@ public class GroupService {
         group.setDescription(groupChanges.getDescription());
         Group updatedGroup = groupRepository.save(group);
         return GroupDTO.to(updatedGroup);
+    }
+
+    public GroupDTO addUsersToGroup(Group group, List<Long> userIds) {
+        //clear duplicates
+        Set<Long> userSet = new HashSet<>(userIds);
+        userIds.clear();
+        userIds.addAll(userSet);
+
+        List<UserGroup> groupUsers = group.getUserGroups();
+        List<User> users = groupUsers.stream()
+                .map(UserGroup::getUser)
+                .collect(Collectors.toList());
+        userIds.forEach(userId -> {
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (!users.contains(user)) {
+                    groupUsers.add(UserGroup.builder()
+                            .user(user)
+                            .group(group)
+                            .build());
+                }
+            }
+        });
+
+        group.setUserGroups(groupUsers);
+        groupRepository.save(group);
+
+        return GroupDTO.to(group);
     }
 
     private List<GroupDTO> convertGroupsToDtos(List<Group> groups) {
