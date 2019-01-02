@@ -27,10 +27,13 @@ public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Size(min = 3, max = 45)
     private String addressLine;
     @NonNull
+    @Size(min = 3, max = 45)
     private String city;
     @NonNull
+    @Size(min = 5, max = 10)
     private String postcode;
     @NonNull
     @Size(min = 3, max = 3)

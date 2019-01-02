@@ -5,16 +5,15 @@ import lombok.NonNull;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
 public class CreateEventCommand {
     @NonNull
-    @Min(3)
-    @Max(45)
+    @Size(min = 3, max = 45)
     private String name;
-    @Min(10)
-    @Max(200)
+    @Size(min = 10, max = 200)
     private String description;
     private Boolean openToPublic;
     private Boolean unlimitedParticipants;

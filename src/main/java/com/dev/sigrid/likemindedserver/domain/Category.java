@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Category implements Serializable {
     @NonNull
     private String name;
     private String iconFilePath;
+    @Size(min = 10, max = 200)
     private String description;
     private boolean active = true;
     @CreationTimestamp

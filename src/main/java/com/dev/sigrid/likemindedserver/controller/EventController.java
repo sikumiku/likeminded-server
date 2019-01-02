@@ -1,5 +1,6 @@
 package com.dev.sigrid.likemindedserver.controller;
 
+import com.dev.sigrid.likemindedserver.dto.ApiResponse;
 import com.dev.sigrid.likemindedserver.service.EventService;
 import com.dev.sigrid.likemindedserver.domain.Event;
 import com.dev.sigrid.likemindedserver.domain.User;
@@ -81,7 +82,7 @@ public class EventController {
 
     @PutMapping("/events/{id}/invite")
     @PreAuthorize("hasRole('ROLE_USER')")
-    ResponseEntity<EventDTO> addUsersToEvent(@Valid @PathVariable Long id, @RequestParam("userIds") List<Long> userIds,
+    ResponseEntity<?> addUsersToEvent(@Valid @PathVariable Long id, @RequestParam("userIds") List<Long> userIds,
                                              @RequestParam("groupIds") List<Long> groupIds,
                                              @CurrentUser UserPrincipal currentUser) throws URISyntaxException {
         log.info("Request to add user with ids {} to event id {}", userIds, id);
@@ -92,7 +93,8 @@ public class EventController {
         if (optionalEvent.isPresent()) {
             event = optionalEvent.get();
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(new ApiResponse(false, "Can't add users to non existent event."),
+                    HttpStatus.NOT_FOUND);
         }
 
         Optional<User> optionalUser = userRepository.findById(currentUser.getId());
@@ -104,7 +106,8 @@ public class EventController {
         if (user != null && Objects.equals(event.getUser().getId(), user.getId())) {
             return ResponseEntity.ok(eventService.addUsersToEvent(event, userIds, groupIds));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return new ResponseEntity<>(new ApiResponse(false, "Only event organizers can add users to event."),
+                HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/events/{id}")
