@@ -2,7 +2,8 @@ spring:
   application:
     name: LikeMinded
 
-  profiles: production
+  profiles:
+    active: production
 
   jpa:
     properties:
