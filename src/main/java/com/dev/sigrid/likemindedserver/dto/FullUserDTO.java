@@ -7,7 +7,6 @@ import com.dev.sigrid.likemindedserver.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -32,7 +31,7 @@ public class FullUserDTO {
                 user.getAddress(),
                 user.getCategories(user),
                 user.getFavoriteGames(user),
-                user.getProfileImgFilePath()
+                user.getImageBase64()
         );
     }
 }

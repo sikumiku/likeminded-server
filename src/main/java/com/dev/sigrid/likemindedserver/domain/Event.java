@@ -27,12 +27,14 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-//    @Min(3)
-//    @Max(45)
+    @Min(3)
+    @Max(45)
     private String name;
+    @Min(10)
+    @Max(200)
     private String description;
     private Boolean openToPublic;
-    private String photoFilePath;
+    private String imageBase64;
     private Boolean unlimitedParticipants;
     private Integer maxParticipants;
     private boolean active = true;

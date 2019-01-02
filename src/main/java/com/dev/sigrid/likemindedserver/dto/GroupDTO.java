@@ -22,7 +22,7 @@ public class GroupDTO {
                 group.getName(),
                 group.getDescription(),
                 group.getCategories(group),
-                group.getImageFilePath()
+                group.getImageBase64()
         );
     }
 }

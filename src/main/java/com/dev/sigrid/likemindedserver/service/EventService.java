@@ -66,7 +66,7 @@ public class EventService {
                 .build()));
         event.setEventCategories(eventCategories);
 
-        event.setPhotoFilePath(createEventCommand.getPicture());
+        event.setImageBase64(createEventCommand.getPicture());
 
         Event result = eventRepository.save(event);
 

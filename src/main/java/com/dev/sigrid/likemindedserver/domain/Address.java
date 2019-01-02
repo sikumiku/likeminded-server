@@ -32,7 +32,7 @@ public class Address implements Serializable {
     @NonNull
     private String postcode;
     @NonNull
-//    @Max(3)
+    @Max(3)
     private String countrycode;
     @Builder.Default
     private boolean active = true;

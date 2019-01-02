@@ -43,7 +43,7 @@ public class GroupService {
                 .build()));
         group.setGroupCategories(groupCategories);
 
-        group.setImageFilePath(createGroupCommand.getPicture());
+        group.setImageBase64(createGroupCommand.getPicture());
 
         Group result = groupRepository.save(group);
 

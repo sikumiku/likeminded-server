@@ -1,12 +1,31 @@
-app.jwtSecret: JWTSuperSecretKey
-app.jwtExpirationInMs: 604800000
----
 spring:
   application:
-      name: LikeMinded
+    name: LikeMinded
 
+  profiles: production
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: ${DATABASE_URL}
+
+  jackson:
+    serialization:
+     WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
+  jwtSecret: ${JWT_SECRET}
+  jwtExpirationInMs: 18000000
+
+---
+spring:
   profiles:
-    active: production
+   active: development
 
   jpa:
     properties:
@@ -24,6 +43,9 @@ spring:
     serialization:
      WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: UTC
+
+  jwtSecret: SuperSecretKey
+  jwtExpirationInMs: 604800000
 
 logging:
   level:

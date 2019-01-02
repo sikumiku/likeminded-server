@@ -1,15 +1,10 @@
 package com.dev.sigrid.likemindedserver.dto;
 
-import com.dev.sigrid.likemindedserver.domain.Address;
 import com.dev.sigrid.likemindedserver.domain.Category;
 import com.dev.sigrid.likemindedserver.domain.Event;
-import com.dev.sigrid.likemindedserver.domain.EventTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +34,7 @@ public class EventDTO {
                 AddressDTO.domainToDto(event.getAddress()),
                 event.getCategories(event),
                 event.getEventTimes().stream().map(EventTimeDTO::domainToDto).collect(Collectors.toList()),
-                event.getPhotoFilePath()
+                event.getImageBase64()
         );
     }
 }

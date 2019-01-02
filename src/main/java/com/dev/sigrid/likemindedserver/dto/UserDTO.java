@@ -21,7 +21,7 @@ public class UserDTO {
                 user.getEmail(),
                 user.getFirstname(),
                 user.getLastname(),
-                user.getProfileImgFilePath()
+                user.getImageBase64()
         );
     }
 }

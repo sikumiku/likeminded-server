@@ -10,9 +10,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,11 +36,15 @@ public class User implements Serializable {
     @Size(max = 50)
     @Email
     private String email;
+    @Min(2)
+    @Max(45)
     private String firstname;
+    @Min(2)
+    @Max(45)
     private String lastname;
     private Date birthday;
-    private String profileImgFilePath;
-
+    @Max(214000)
+    private String imageBase64;
     @NotBlank
     private String password;
 
