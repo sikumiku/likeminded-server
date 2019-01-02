@@ -36,14 +36,12 @@ public class User implements Serializable {
     @Size(max = 50)
     @Email
     private String email;
-    @Min(2)
-    @Max(45)
+    @Size(min = 2, max = 45)
     private String firstname;
-    @Min(2)
-    @Max(45)
+    @Size(min = 2, max = 45)
     private String lastname;
     private Date birthday;
-    @Max(214000)
+    @Size(max = 214000)
     private String imageBase64;
     @NotBlank
     private String password;

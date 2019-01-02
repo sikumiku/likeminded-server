@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -14,9 +15,9 @@ public class EventImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Max(40)
+    @Size(max = 40)
     private String imageName;
-    @Max(214000) // 200px by 200px at 72dpi
+    @Size(max = 214000) // 200px by 200px at 72dpi
     private String imageBase64;
 
     @ManyToOne(fetch = FetchType.LAZY)

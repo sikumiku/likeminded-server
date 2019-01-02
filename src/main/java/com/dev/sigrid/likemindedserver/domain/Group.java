@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,13 +29,11 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
-    @Min(3)
-    @Max(45)
+    @Size(min = 3, max = 45)
     private String name;
-    @Min(10)
-    @Max(200)
+    @Size(min = 10, max = 200)
     private String description;
-    @Max(214000)
+    @Size(max = 214000)
     private String imageBase64;
     private boolean active = true;
     @CreationTimestamp

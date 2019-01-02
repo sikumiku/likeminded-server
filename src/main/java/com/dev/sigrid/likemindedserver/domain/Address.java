@@ -12,6 +12,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -32,7 +33,7 @@ public class Address implements Serializable {
     @NonNull
     private String postcode;
     @NonNull
-    @Max(3)
+    @Size(min = 3, max = 3)
     private String countrycode;
     @Builder.Default
     private boolean active = true;
