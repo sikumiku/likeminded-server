@@ -7,8 +7,10 @@ LikeMinded is an appication for tabletop enthusiasts that would like to find oth
 This repository is for the service portion of it that houses business logic and data.
 Frontend repository can be found [here](https://github.com/sikumiku/likeminded-client).
 
-- [Creating an App](#creating-an-app) – How to create a new app.
-- [User Guide](https://facebook.github.io/create-react-app/) – How to develop apps bootstrapped with Create React App.
+- [Used technologies](#used-technologies) – Used technologies in service
+- [Contributing](#contributing) – How to set up local development environment for making any changes
+- [Major endpoints](#major-endpoints) – Major endpoints (controllers)
+- [Authors](#authors) - Contributing authors
 
 If you see anything not working, feel free to report [issues here](https://github.com/sikumiku/likeminded-server/issues/new).
 
