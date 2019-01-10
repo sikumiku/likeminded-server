@@ -32,13 +32,24 @@ If you see anything not working, feel free to report [issues here](https://githu
 
 Everybody is welcome to contribute to the project. Some tips on getting started:
 
-1. git clone git@github.com:sikumiku/likeminded-server.git
-2. cd docker
-3. docker-compose up // setup local DB with basic user roles
+1. `git clone git@github.com:sikumiku/likeminded-server.git`
+2. `cd docker`
+3. `docker-compose up` // setup local DB with basic user roles
 4. Migrations: add new file to migrations folder following format of `V000__name_of_your_migration_change.sql`
 5. Use gradle Bootrun task with VM option `-Dspring.profiles.active=development`
 
 For setting up frontend, follow the guide at the client repository, but for testing API endpoints, the service will be hosted on http://localhost:8080
+
+### Functional requirements that still need implementation
+
+- [ ] Add endpoint for adding more event creation times to existing events.
+- [ ] New role: sponsor.
+- [ ] New DB tables for blogposts and adverts.
+- [ ] Endpoints for querying blogposts, creating blogposts, updating blogposts and deleting blogposts (sponsor, admin only).
+- [ ] Endpoints for querying adverts, creating adverts, updating adverts and deleting adverts (sponsor, admin only).
+- [ ] Admin tools.
+- [ ] i18n implementation.
+- [ ] Translations (English, Russian).
 
 ### Major endpoints
 
