@@ -2,7 +2,7 @@
 
 ![LikeMinded logo](https://i.imgur.com/KfMHj4c.png)
 
-LikeMinded is an appication for tabletop enthusiasts that would like to find other tabletop gamers with similar tastes and organize groups as well as ongoing events.
+LikeMinded is an application for tabletop enthusiasts that would like to find other tabletop gamers with similar tastes and organize groups as well as ongoing events.
 
 This repository is for the service portion of it that houses business logic and data.
 Frontend repository can be found [here](https://github.com/sikumiku/likeminded-client).
